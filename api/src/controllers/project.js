@@ -51,7 +51,7 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
 router.put("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
     const obj = req.body;
-
+    console.log("YO", obj);
     const data = await ProjectObject.findByIdAndUpdate(req.params.id, obj, { new: true });
 
     res.status(200).send({ ok: true, data });

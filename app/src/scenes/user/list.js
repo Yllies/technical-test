@@ -107,6 +107,7 @@ const Create = () => {
             <Formik
               initialValues={{}}
               onSubmit={async (values, { setSubmitting }) => {
+                console.log(values);
                 try {
                   values.status = "active";
                   values.availability = "not available";
@@ -128,7 +129,7 @@ const Create = () => {
                     <div className="flex justify-between flex-wrap">
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Name</div>
-                        <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="username" value={values.username} onChange={handleChange} />
+                        <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" value={values.name} onChange={handleChange} />
                       </div>
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Email</div>
@@ -244,7 +245,7 @@ const UserCard = ({ hit, projects }) => {
           </svg>
         </div>
       </div>
-      {/* infos */}
+      {console.log(hit)}
       <div className="flex flex-col flex-1 justify-between">
         <div className="flex flex-col items-center text-center my-4 space-y-1">
           <p className="font-semibold text-lg">{hit.name}</p>

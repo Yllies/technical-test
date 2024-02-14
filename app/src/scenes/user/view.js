@@ -13,6 +13,7 @@ export default () => {
   useEffect(() => {
     (async () => {
       const response = await api.get(`/user/${id}`);
+
       setUser(response.data);
     })();
   }, []);
@@ -44,7 +45,9 @@ const Detail = ({ user }) => {
       initialValues={user}
       onSubmit={async (values) => {
         try {
-          await api.put(`/user/${user._id}`, values);
+          // await api.put(`/user/${user._id}`, values);
+          // console.log(user._id);
+          console.log("api", api);
           toast.success("Updated!");
         } catch (e) {
           console.log(e);
@@ -132,12 +135,12 @@ const Detail = ({ user }) => {
             </div>
 
             <div className="flex  mt-2">
-              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onChange={handleSubmit}>
+              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onClick={handleSubmit}>
                 Update
               </LoadingButton>
-              <button className="ml-[10px] bg-[#F43F5E] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" onClick={deleteData}>
+              <LoadingButton className="ml-[10px] bg-[#F43F5E] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" onClick={deleteData}>
                 Delete
-              </button>
+              </LoadingButton>
             </div>
           </React.Fragment>
         );

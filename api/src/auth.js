@@ -32,6 +32,7 @@ class Auth {
 
     try {
       const user = await this.model.findOne({ name: username });
+
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
 
       const match = await user.comparePassword(password);
@@ -60,6 +61,11 @@ class Auth {
   async signup(req, res) {
     try {
       const { password, username, organisation } = req.body;
+
+      const existingUser = await this.model.findOne({ name: { $regex: new RegExp("^" + username + "$", "i") } });
+
+      console.log(existingUser);
+      if (existingUser) return res.status(400).send({ ok: false, code: USER_ALREADY_REGISTERED });
 
       if (password && !validatePassword(password)) return res.status(200).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 

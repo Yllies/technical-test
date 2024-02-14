@@ -21,7 +21,9 @@ export default () => {
 
       {user && <Redirect to="/" />}
       <Formik
-        initialValues={{ username: "", organisation: "", password: "" }}
+        validateOnChange={false}
+        validateOnBlur={false}
+        initialValues={{ name: "", organisation: "", password: "" }}
         onSubmit={async (values, actions) => {
           try {
             const { user, token } = await api.post(`/user/signup`, values);
@@ -29,7 +31,7 @@ export default () => {
             if (user) dispatch(setUser(user));
           } catch (e) {
             console.log("e", e);
-            toast.error("Wrong login", e.code);
+            toast.error("User with the same username already register", e.code);
           }
           actions.setSubmitting(false);
         }}>
@@ -40,10 +42,10 @@ export default () => {
                 <div className="flex flex-col-reverse">
                   <Field
                     className="peer signInInputs "
-                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
                     name="username"
                     type="text"
-                    id="username"
+                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
+                    id="name"
                     value={values.username}
                     onChange={handleChange}
                   />
@@ -58,8 +60,8 @@ export default () => {
                 <div className="flex flex-col-reverse">
                   <Field
                     className="peer signInInputs "
-                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
                     name="organisation"
+                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
                     type="text"
                     id="organisation"
                     value={values.organisation}

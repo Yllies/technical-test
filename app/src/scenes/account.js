@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-
-import "react-tagsinput/react-tagsinput.css";
 import Loader from "../components/loader";
 import LoadingButton from "../components/loadingButton";
 import { setUser } from "../redux/auth/actions";
@@ -26,7 +24,7 @@ export default () => {
     let body = values;
     try {
       const responseData = await api.put(`/user/${user._id}`, body);
-      toast.success("Updated!");
+      toast.success("Success!");
       dispatch(setUser(responseData.user));
     } catch (e) {
       console.log(e);
@@ -62,6 +60,7 @@ export default () => {
             <hr className="my-4" />
             <div className="flex justify-end">
               <LoadingButton
+                type="submit"
                 className="ml-[10px] bg-[#17a2b8] hover:bg-[#138496] text-[1rem] text-[#fff] py-[0.375rem] px-[0.75rem] rounded-[0.25rem]"
                 loading={isLoading}
                 onClick={handleSubmit}>
@@ -70,6 +69,19 @@ export default () => {
             </div>
           </React.Fragment>
         </form>
+        <LoadingButton
+          type="button"
+          className="ml-[10px] bg-[#9e2323] hover:bg-[#ce5b5b] text-[1rem] text-[#fff] py-[0.375rem] px-[0.75rem] rounded-[0.25rem]"
+          loading={isLoading}
+          onClick={async () => {
+            const hasConfirmed = window.confirm("Are you sure?");
+            if (hasConfirmed) {
+              await api.remove(`/user/${user._id}`);
+              window.location.href = "/auth/signin";
+            }
+          }}>
+          Delete Account
+        </LoadingButton>
       </div>
       <Toaster />
     </div>

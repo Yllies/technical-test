@@ -8,6 +8,7 @@ const Home = () => {
     const { data } = await api.get("/user/available");
     setAvailableUsers(data);
   }
+
   useEffect(() => {
     getUser();
   }, []);

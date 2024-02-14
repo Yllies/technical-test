@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Signin from "./signin";
 import Signup from "./signup";
+import api from "../../services/api";
 
 const Auth = () => {
   return (

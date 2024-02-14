@@ -25,6 +25,7 @@ const Activity = () => {
     if (date) setDate(new Date(date));
 
     if (user) return setUser({ name: user });
+
     return setUser(u);
   }, []);
 
@@ -47,6 +48,8 @@ const Activity = () => {
 };
 
 const Activities = ({ date, user, project }) => {
+  const [deleted, setDeleted] = useState(false);
+
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(null);
 
@@ -54,14 +57,15 @@ const Activities = ({ date, user, project }) => {
     (async () => {
       const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&project=${project}`);
       const projects = await api.get(`/project/list`);
+
       setActivities(
         data.map((activity) => {
-          return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
+          return { ...activity, projectName: projects.data.find((project) => project._id === activity.projectId)?.name };
         }),
       );
       setOpen(null);
     })();
-  }, [date]);
+  }, [date, project, deleted]);
 
   const days = getDaysInMonth(date.getMonth(), date.getFullYear());
   const onAddActivities = (project) => {
@@ -96,8 +100,12 @@ const Activities = ({ date, user, project }) => {
   async function onDelete(i) {
     if (window.confirm("Are you sure ?")) {
       const activity = activities[i];
+      setDeleted(true);
+
       await api.remove(`/activity/${activity._id}`);
-      toast.success(`Deleted ${activity.project}`);
+      await setDeleted(false);
+      console.log("yo", activity[i]);
+      toast.success(`Deleted ${activities[i].projectName}`);
     }
   }
 
@@ -174,6 +182,7 @@ const Activities = ({ date, user, project }) => {
                     })}
                   </tr>
                   {activities.map((e, i) => {
+                    console.log(activities[i].projectName);
                     return (
                       <React.Fragment key={e.project}>
                         <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`} onClick={() => setOpen(i)}>
@@ -211,7 +220,7 @@ const Activities = ({ date, user, project }) => {
                                 <textarea
                                   value={e.comment}
                                   onChange={(e) => onUpdateComment(i, e.target.value)}
-                                  placeholder={`Please add a comment on what you deliver on ${e.project} (We need to show value created to clients)`}
+                                  placeholder={`Please add a comment on what you deliver on ${activities[i].projectName}`}
                                   rows={6}
                                   className="w-full text-sm pt-2 pl-2"
                                 />

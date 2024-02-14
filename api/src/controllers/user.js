@@ -17,7 +17,7 @@ router.post("/signin", (req, res) => UserAuth.signin(req, res));
 router.post("/logout", (req, res) => UserAuth.logout(req, res));
 router.post("/signup", (req, res) => UserAuth.signup(req, res));
 
-router.get("/signin_token", passport.authenticate("user", { session: false }), (req, res) => UserAuth.signinToken(req, res));
+router.post("/signin_token", passport.authenticate("user", { session: false }), (req, res) => UserAuth.signinToken(req, res));
 
 router.get("/available", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
@@ -87,9 +87,13 @@ router.put("/", passport.authenticate("user", { session: false }), async (req, r
   }
 });
 
-router.delete("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+router.delete("/:id", passport.authenticate("user", { session: false }), async (req, res, next) => {
   try {
     await UserObject.findOneAndRemove({ _id: req.params.id });
+    req.logout({
+      keepSessionInfo: false,
+    });
+    res.clearCookie("jwt");
     res.status(200).send({ ok: true });
   } catch (error) {
     console.log(error);

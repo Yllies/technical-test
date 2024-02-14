@@ -17,9 +17,10 @@ const ProjectList = () => {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get("/project");
+
       setProjects(u);
     })();
-  }, []);
+  }, [activeProjects]);
 
   useEffect(() => {
     const p = (projects || []).filter((p) => p.status === "active");

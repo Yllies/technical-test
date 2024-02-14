@@ -29,9 +29,10 @@ const App = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await api.get("/user/signin_token");
+        const res = await api.post("/user/signin_token");
         if (!res.ok || !res.user) return setLoading(false);
         if (res.token) api.setToken(res.token);
+        console.log(res);
         dispatch(setUser(res.user));
       } catch (e) {
         console.log(e);

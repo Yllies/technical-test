@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Logo from "../../assets/logo_full_blue.png";
 import { setUser } from "../../redux/auth/actions";
 import api from "../../services/api";
 
 const Header = () => {
+  const history = useHistory(); // Initialisation de useHistory
+
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
@@ -16,9 +18,16 @@ const Header = () => {
     dispatch(setUser(null));
   }
 
+  useEffect(() => {
+    if (!api.token) {
+      history.push("/auth");
+    }
+  }, [api.token]);
+
   async function handleAvailability(availability) {
     if (availability === "available" || availability === "not available") {
       const res = await api.put(`/user`, { availability });
+
       dispatch(setUser(res.data));
       toast.success("Status Updated!");
     }

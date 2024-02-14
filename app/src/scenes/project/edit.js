@@ -17,6 +17,7 @@ export default function EditProject() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
+
       setProject(u);
     })();
   }, []);
@@ -26,7 +27,7 @@ export default function EditProject() {
   async function deleteData() {
     const confirm = window.confirm("Are you sure ?");
     if (!confirm) return;
-    await api.remove(`/project/${id}`);
+    await api.delete(`/project/${id}`);
     toast.success("successfully removed!");
     history.push("/projects");
   }
@@ -45,12 +46,13 @@ export default function EditProject() {
             </button>
           </div>
           <Formik
-            initialValues={project}
+            initialValues={project[0]}
             onSubmit={async (values) => {
+              console.log("values", values);
               try {
-                await api.put(`/project/${project._id}`, values);
-                toast.success(`${project.name} updated!`);
-                history.push(`/project/${project._id}`);
+                await api.put(`/project/${project[0]._id}`, values);
+                toast.success(`${project[0].name} updated!`);
+                history.push(`/project/${project[0]._id}`);
               } catch (e) {
                 console.log(e);
                 toast.error("Some Error!");
@@ -66,7 +68,7 @@ export default function EditProject() {
                   <div className="flex gap-4 flex-wrap">
                     <div className="w-full md:w-[260px] mt-2">
                       <div className="text-[14px] text-[#212325] font-medium	">Name of project</div>
-                      <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" disabled value={values.name} onChange={handleChange} />
+                      <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" value={values.name} onChange={handleChange} />
                     </div>
                     <div className="w-full md:w-[260px] mt-2">
                       <div className="text-[14px] text-[#212325] font-medium	">Lead by name</div>
@@ -81,6 +83,7 @@ export default function EditProject() {
                       </select>
                     </div>
                   </div>
+
                   <div className="flex gap-4 mt-3">
                     <div className="w-full md:w-[260px]">
                       <div className="text-[14px] text-[#212325] font-medium	">Budget max / month</div>
@@ -137,9 +140,9 @@ export default function EditProject() {
 
                   <div className="w-full mt-3">
                     <div className="text-[14px] text-[#212325] font-medium	">Autres</div>
-                    {(values.links || []).map((link) => {
+                    {(values.links || []).map((link, i) => {
                       return (
-                        <div className="flex flex-1 flex-row mt-2 items-center gap-1">
+                        <div className="flex flex-1 flex-row mt-2 items-center gap-1" key={i}>
                           <div className="flex gap-1 flex-1 items-center">
                             <input
                               className="projectsInput mt-0 text-[14px] font-normal text-[#212325] rounded-[10px]"
@@ -219,6 +222,7 @@ export default function EditProject() {
                     </form>
                   </div>
                 </div>
+
                 <div className="flex ml-3 mt-2">
                   <LoadingButton
                     className="ml-[10px] bg-[#0560FD] text-[16px] font-medium text-[#fff] py-[12px] px-[22px] rounded-[10px]"

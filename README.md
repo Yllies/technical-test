@@ -44,7 +44,7 @@ Send us the project and answer to those simple questions :
 - Which feature did you develop and why ?
 - Do you have any feedback about the code / architecture of the project and what was the difficulty you encountered while doing it ?
 
-First bug : The page was refreshing when the user clicks on SignUp button from the SignIn page I used <Link> component from react-router to fix that.
+First bug : When I click the Signup button, the error message "The field is empty" is quickly displayed under the inputs, and then I am redirected to the Signup form. To fix this, I used some props of Formik.
 
 Second bug : We can signup with the same username several times. For the security and the different reasons, I fixed this by adding a condition to check if the user is already registered or not.
 

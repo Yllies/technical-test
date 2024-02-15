@@ -68,13 +68,15 @@ Eleventh bug : The details of the project are not displayed. For the UX and UI. 
 
 Twelfth bug : I can't edit the project because the id which is passed is undefined. I updated that to pass correctly the id.
 
-Fourteenth bug : When I click to edit for editing the project, all the inputs are empty, for the UX, I fixed this with the good values by fixing the initialValue to an object and not an array, and this fixed the values sended to the body to and object and not an array.
+Fourteenth bug : When I click to edit for editing the project, all the inputs are empty, for the UX, I fixed this with the good values by fixing the initialValue to an object and not an array, and this fixed the values sended to the body to an object and not an array.
 
 Thirteenth bug : When we go to "Activites", the name of the project in the placeholder is undefined. I changed this with the right value.
 
 Sixteenth bug : The list of the users available does not update when I change my availability to "Not available". To fix this, I added a dependency to the useEffect.
 
 Seventeenth bug : The list of the projects deleted does not update when I delete a project. To fix this, I added a dependency to the useEffect for the UX.
+
+Eighteenth bug : Some toast have an undefined word to the text to specify the entity. I changed this to put the word dynamic.
 
 Feature developed: I put the possibility for the user connected to delete his own account to "My account" because this is necessary for all users to can delete his own account.
 
